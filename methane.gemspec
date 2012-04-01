@@ -16,5 +16,9 @@ Gem::Specification.new do |gem|
   gem.version       = Methane::VERSION
 
   gem.add_dependency('slop')
+  gem.add_dependency('qtbindings')
+  gem.add_dependency('libnotify')
+  gem.add_dependency('ffi')
+
   gem.add_development_dependency('rake')
 end

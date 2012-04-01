@@ -1,6 +1,7 @@
 require 'slop'
 
 require 'methane/version'
+require 'methane/app'
 
 module Methane
   
@@ -28,6 +29,8 @@ module Methane
 
     if (!@options.account? or !@options.token?) and !@options.config?
       puts @options
+    else
+      Methane::App.start
     end
   end # run
 
