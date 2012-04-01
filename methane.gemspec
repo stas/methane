@@ -14,4 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "methane"
   gem.require_paths = ["lib"]
   gem.version       = Methane::VERSION
+
+  gem.add_dependency('slop')
+  gem.add_development_dependency('rake')
 end
