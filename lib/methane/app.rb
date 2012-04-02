@@ -1,6 +1,11 @@
 require 'Qt4'
 require 'qtwebkit'
-require 'libnotify'
+
+begin
+  require 'libnotify'
+rescue LoadError
+  # TODO: load growl?
+end
 
 module Methane
   
@@ -11,28 +16,34 @@ module Methane
     # Build a new Qt window with a WebKit frame
     def self.start
       url = File.join(Methane.root, 'static', 'index.html')
+      icon = File.join(Methane.root, 'static', 'img', 'methane.png')
       title = "Methane v.#{Methane::VERSION}"
       Methane::App.notify('Welcome', title)
       @app = Qt::Application.new([]) do
         @view = Qt::WebView.new do
           self.load Qt::Url.new("file://#{url}")
-          self.setWindowTitle(title)
-          self.resize 800,600
-          self.show
+          setWindowIcon(Qt::Icon.new(icon))
+          setWindowTitle(title)
+          resize 600,800
+          show
         end
         self.exec
       end
     end #start
 
     # A simple wrapper around libnotify
-    def self.notify(title, body)
-      Libnotify.show(
-        :summary    => title,
-        :body       => body,
-        :timeout    => 1.5,
-        :urgency    => :critical, # :low, :normal, :critical
-        :icon_path  => :'emblem-default'
-      )
+    def self.notify(title, body, timeout=1.5, icon=:'')
+      begin
+        Libnotify.show(
+          :summary    => title,
+          :body       => body,
+          :timeout    => 1.5,
+          :icon_path  => :'emblem-default'
+        )
+      rescue NameError
+        # TODO: use a different engine
+      end
+      #end
     end #notify
 
   end
