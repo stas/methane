@@ -19,7 +19,7 @@ module Methane
       on :a, :account=, 'Campfire account.'
       on :t, :token=, 'User token.'
       on :s, :ssl=, 'Use SSL?', :default => true
-      on :c, :config=, 'Use ~/.methanerc, overwrites options from above.'
+      on :c, :config=, 'Use a ~/.methane/config file, overwrites other options.'
       on :d, :debug=, 'Enable debugging.'
       on :v, :version do
         puts "Methane Campfire Client v.#{Methane::VERSION}"
