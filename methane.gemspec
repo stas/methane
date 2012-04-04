@@ -17,6 +17,9 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency('slop')
   gem.add_dependency('qtbindings')
+  gem.add_dependency('tinder')
+  gem.add_dependency('faye')
+  gem.add_dependency('thin')
 
   gem.add_development_dependency('rake')
 end
