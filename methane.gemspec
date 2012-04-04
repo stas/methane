@@ -21,5 +21,8 @@ Gem::Specification.new do |gem|
   gem.add_dependency('faye')
   gem.add_dependency('thin')
 
+  # Platform specific dependencies
+  gem.add_dependency('libnotify') if RUBY_PLATFORM[/linux/i]
+
   gem.add_development_dependency('rake')
 end
