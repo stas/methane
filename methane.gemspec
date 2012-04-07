@@ -25,4 +25,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency('libnotify') if RUBY_PLATFORM[/linux/i]
 
   gem.add_development_dependency('rake')
+  gem.add_development_dependency('bacon')
 end
