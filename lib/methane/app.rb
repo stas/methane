@@ -16,13 +16,13 @@ module Methane
       Methane::Notification.show(title, 'Started successfully')
 
       @app = Qt::Application.new([]) do
-        @view = Qt::WebView.new do
-          self.load Qt::Url.new("file://#{url}")
-          setWindowIcon(Qt::Icon.new(icon))
-          setWindowTitle(title)
-          resize 600,800
-          show
-        end
+        @view = Qt::WebView.new
+        # Load app into the frame
+        @view.load Qt::Url.new("file://#{url}")
+        # Set app icon
+        @view.setWindowIcon(Qt::Icon.new(icon))
+        @view.resize 600,800
+        @view.show
         self.exec
       end
     end #start
