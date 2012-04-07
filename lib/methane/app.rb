@@ -27,6 +27,8 @@ module Methane
           @view, SLOT( 'setWindowTitle(const QString&)' )
         )
         @view.resize 600,800
+        # Disable mouse right click menus
+        @view.setContextMenuPolicy(Qt::NoContextMenu)
         @view.show
         self.exec
       end
