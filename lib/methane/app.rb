@@ -1,12 +1,6 @@
 require 'Qt4'
 require 'qtwebkit'
 
-begin
-  require 'libnotify'
-rescue LoadError
-  # TODO: load growl?
-end
-
 module Methane
   
   # Main GUI class
@@ -18,7 +12,9 @@ module Methane
       url = File.join(Methane.root, 'static', 'index.html')
       icon = File.join(Methane.root, 'static', 'img', 'methane.png')
       title = "Methane v.#{Methane::VERSION}"
-      Methane::App.notify('Welcome', title)
+
+      Methane::Notification.show(title, 'Started successfully')
+
       @app = Qt::Application.new([]) do
         @view = Qt::WebView.new do
           self.load Qt::Url.new("file://#{url}")
@@ -30,21 +26,6 @@ module Methane
         self.exec
       end
     end #start
-
-    # A simple wrapper around libnotify
-    def self.notify(title, body, timeout=1.5, icon=:'')
-      begin
-        Libnotify.show(
-          :summary    => title,
-          :body       => body,
-          :timeout    => 1.5,
-          :icon_path  => :'emblem-default'
-        )
-      rescue NameError
-        # TODO: use a different engine
-      end
-      #end
-    end #notify
 
   end
 

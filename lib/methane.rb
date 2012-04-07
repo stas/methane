@@ -1,6 +1,7 @@
 require 'slop'
 
 require 'methane/version'
+require 'methane/notifications'
 require 'methane/app'
 
 module Methane
