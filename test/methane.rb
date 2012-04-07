@@ -5,14 +5,8 @@ describe Methane do
   end
 
   it 'should have #options and #root' do
-    Methane.options.should.be.nil
+    Methane.config.should.be.nil
     Methane.root.should.be.nil
-  end
-
-  it 'should should start app and load options' do
-    Methane.run
-    Methane.options.should.not.be.nil
-    Methane.root.should.not.be.nil
   end
 
 end
