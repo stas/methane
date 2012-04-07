@@ -1,13 +1,14 @@
 require 'slop'
 
 require 'methane/version'
+require 'methane/config'
 require 'methane/notifications'
 require 'methane/app'
 
 module Methane
   
   class << self
-    attr_accessor :options, :root
+    attr_accessor :config, :root
   end
 
   # Methane runner
@@ -15,7 +16,7 @@ module Methane
   # Reads options and bootstraps the app
   def self.run
     @root= Dir.pwd
-    @options = Slop.parse(:help => true, :multiple_switches => false) do
+    options = Slop.parse(:help => true, :multiple_switches => false) do
       banner "methane [options]"
       on :c, :config=, 'Use a different config file than ~/.methane/config'
       on :d, :debug=, 'Enable debugging.'
@@ -25,11 +26,8 @@ module Methane
       end
     end
 
-    if !@options.config?
-      puts @options
-    else
-      Methane::App.start
-    end
+    @config = Methane::Config.new options[:config]
+    Methane::App.start
   end # run
 
 end #module
