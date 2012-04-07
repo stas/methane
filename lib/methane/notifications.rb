@@ -16,7 +16,6 @@ module Methane
       @instance ||= self.new
       begin
         @instance.libnotify(title, body, timeout, icon)
-        #self.libnotify(title, body, timeout, icon)
       rescue LoadError
       end
     end
@@ -34,7 +33,7 @@ module Methane
         :summary    => title,
         :body       => body,
         :timeout    => 1.5,
-        :icon_path  => :'emblem-default'
+        :icon_path  => icon
       )
     end #notify
 
