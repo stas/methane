@@ -14,12 +14,13 @@ module Methane
       # Do not spawn new instances
       return if !@instances.nil?
 
+      title = "Hello from Methane v.#{Methane::VERSION}"
+      Methane::Notification.show(title, Methane.config.messages.join("\n"))
+
       # Spawn the app
       @instance ||= self.new
       @instance.build_app
       @instance.app.exec
-      title = "Methane v.#{Methane::VERSION}"
-      Methane::Notification.show(title, 'Started successfully')
     end #start
 
     # Builds a Qt window with a WebKit frame
