@@ -5,16 +5,30 @@ module Methane
   
   # Main GUI class
   class App
-    attr_accessor :app, :view
+    attr_accessor :app
 
-    # Build a new Qt window with a WebKit frame
+    @instance
+
+    # App spawner
     def self.start
-      url = File.join(Methane.root, 'static', 'index.html')
-      icon = File.join(Methane.root, 'static', 'img', 'methane.png')
+      # Do not spawn new instances
+      return if !@instances.nil?
+
+      # Spawn the app
+      @instance ||= self.new
+      @instance.build_app
+      @instance.app.exec
       title = "Methane v.#{Methane::VERSION}"
-
       Methane::Notification.show(title, 'Started successfully')
+    end #start
 
+    # Builds a Qt window with a WebKit frame
+    #
+    # Separated mostly for testing purposes
+    def build_app
+      root = Methane.root || ''
+      url = File.join(root, 'static', 'index.html')
+      icon = File.join(root, 'static', 'img', 'methane.png')
       @app = Qt::Application.new([]) do
         @view = Qt::WebView.new
         # Load app into the frame
@@ -26,13 +40,12 @@ module Methane
           @view, SIGNAL( 'titleChanged(const QString&)' ),
           @view, SLOT( 'setWindowTitle(const QString&)' )
         )
-        @view.resize 600,800
         # Disable mouse right click menus
         @view.setContextMenuPolicy(Qt::NoContextMenu)
+        @view.resize 600,800
         @view.show
-        self.exec
       end
-    end #start
+    end
 
   end
 
