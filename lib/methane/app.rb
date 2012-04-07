@@ -21,6 +21,11 @@ module Methane
         @view.load Qt::Url.new("file://#{url}")
         # Set app icon
         @view.setWindowIcon(Qt::Icon.new(icon))
+        # Set title
+        Qt::Object.connect(
+          @view, SIGNAL( 'titleChanged(const QString&)' ),
+          @view, SLOT( 'setWindowTitle(const QString&)' )
+        )
         @view.resize 600,800
         @view.show
         self.exec
