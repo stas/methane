@@ -17,6 +17,9 @@ module Methane
       title = "Hello from Methane v.#{Methane::VERSION}"
       Methane::Notification.show(title, Methane.config.messages.join("\n"))
 
+      # Stop here if config is invalid
+      return if Methane.config.account.nil? or Methane.config.token.nil?
+
       # Spawn the app
       @instance ||= self.new
       @instance.build_app

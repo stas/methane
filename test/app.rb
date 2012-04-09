@@ -14,4 +14,11 @@ describe Methane::App do
     app.class.should.equal Qt::Application
   end
 
+  it 'should not start with invalid config' do
+    Methane.config = Methane::Config.new ''
+    qtapp = Methane::App.start
+    qtapp.should.be.nil
+    Methane.config = nil
+  end
+
 end
