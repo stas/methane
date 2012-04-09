@@ -4,8 +4,9 @@ describe Methane do
     Methane::VERSION.should.not.be.nil
   end
 
-  it 'should have #options and #root' do
+  it 'should have #config, #debug and #root' do
     Methane.config.should.be.nil
+    Methane.debug.should.be.nil
     Methane.root.should.be.nil
   end
 

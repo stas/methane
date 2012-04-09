@@ -8,7 +8,7 @@ require 'methane/app'
 module Methane
   
   class << self
-    attr_accessor :config, :root
+    attr_accessor :config, :root, :debug
   end
 
   # Methane runner
@@ -26,6 +26,7 @@ module Methane
       end
     end
 
+    @debug = options.debug?
     @config = Methane::Config.new options[:config]
     Methane::App.start
   end # run
