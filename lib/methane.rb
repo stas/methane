@@ -2,6 +2,7 @@ require 'slop'
 
 require 'methane/version'
 require 'methane/config'
+require 'methane/proxy'
 require 'methane/notifications'
 require 'methane/app'
 
@@ -28,7 +29,24 @@ module Methane
 
     @debug = options.debug?
     @config = Methane::Config.new options[:config]
+    @pids = []
+
+    # Start libnotify/growl
+    @pids << Process.fork do
+      Methane::Proxy.start do |room, message|
+        title = "#{message.user.name} in #{room.name}"
+        body = message.body
+        Methane::Notification.show(title, body)
+      end
+      detach
+    end
+
+    # Start Qt app
     Methane::App.start
+
+    # End spawned processes
+    @pids.map{ |pid| Process.kill(:KILL, pid) if pid }
+    
   end # run
 
 end #module
