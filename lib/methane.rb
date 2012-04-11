@@ -16,7 +16,6 @@ module Methane
   #
   # Reads options and bootstraps the app
   def self.run
-    @root= Dir.pwd
     options = Slop.parse(:help => true, :multiple_switches => false) do
       banner "methane [options]"
       on :c, :config=, 'Use a different config file than ~/.methane/config'
@@ -27,8 +26,9 @@ module Methane
       end
     end
 
-    @debug = options.debug?
-    @config = Methane::Config.new options[:config]
+    self.root= Dir.pwd
+    self.debug = options.debug?
+    self.config = Methane::Config.new(options[:config])
     @pids = []
 
     # Start libnotify
