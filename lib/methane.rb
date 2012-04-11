@@ -4,6 +4,7 @@ require 'methane/version'
 require 'methane/config'
 require 'methane/proxy'
 require 'methane/notifications'
+require 'methane/server'
 require 'methane/app'
 
 module Methane
@@ -31,13 +32,9 @@ module Methane
     self.config = Methane::Config.new(options[:config])
     @pids = []
 
-    # Start libnotify
+    # Start the server
     @pids << Process.fork do
-      Methane::Proxy.listen do |room, message|
-        title = "#{message.user.name} in #{room.name}"
-        body = message.body
-        Methane::Notification.show(title, body)
-      end
+      Methane::Server.new
     end
 
     # Start Qt app
