@@ -18,8 +18,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency('slop')
   gem.add_dependency('qtbindings')
   gem.add_dependency('tinder')
-  gem.add_dependency('faye')
-  gem.add_dependency('thin')
+  gem.add_dependency('em-websocket')
 
   # Platform specific dependencies
   gem.add_dependency('libnotify') if RUBY_PLATFORM[/linux/i]
