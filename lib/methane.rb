@@ -19,7 +19,7 @@ module Methane
     options = Slop.parse(:help => true, :multiple_switches => false) do
       banner "methane [options]"
       on :c, :config=, 'Use a different config file than ~/.methane/config'
-      on :d, :debug=, 'Enable debugging.'
+      on :d, :debug, 'Enable debugging.'
       on :v, :version do
         puts "Methane Campfire Client v.#{Methane::VERSION}"
         exit
