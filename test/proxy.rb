@@ -7,23 +7,23 @@ describe Methane::Proxy do
   end
   
   it 'should not start without a config' do
-    Methane::Proxy.should.respond_to 'start'
     should.raise(NoMethodError) {
-      Methane::Proxy.start
+      Methane::Proxy.connect
     }
   end
 
+  it '#methods' do
+    %w(account rooms campfire listen speak).each do |m|
+      Methane::Proxy.should.respond_to m
+    end
+  end
+
   if get_config
-    it '#methods' do
-      proxy = Methane::Proxy.new
-
-      proxy.should.not.be.nil
-
-      proxy.should.respond_to :listen
+    it '#attributes' do
+      Methane::Proxy.connect
       %w(account rooms campfire).each do |m|
-        proxy.send(m).should.not.be.nil
+        Methane::Proxy.send(m).should.not.be.nil
       end
-
     end
   end
 

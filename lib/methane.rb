@@ -31,14 +31,13 @@ module Methane
     @config = Methane::Config.new options[:config]
     @pids = []
 
-    # Start libnotify/growl
+    # Start libnotify
     @pids << Process.fork do
-      Methane::Proxy.start do |room, message|
+      Methane::Proxy.listen do |room, message|
         title = "#{message.user.name} in #{room.name}"
         body = message.body
         Methane::Notification.show(title, body)
       end
-      detach
     end
 
     # Start Qt app
