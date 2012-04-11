@@ -48,7 +48,10 @@ module Methane
         @view.setContextMenuPolicy(Qt::NoContextMenu)
         @view.resize 600,800
         @view.show
+
+        trap(:INT) { quit }
       end
+
     end
 
   end
