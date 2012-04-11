@@ -1,5 +1,4 @@
 require 'tinder'
-require 'eventmachine'
 
 module Methane
 
@@ -49,43 +48,6 @@ module Methane
           'Please check the configuration file.'
         )
       end
-    end
-
-    # Listens to the Tinder Streaming API
-    def self.listen
-
-      self.connect
-      return if self.campfire.nil?
-
-      last_message = {}
-
-      EM::run do
-        self.rooms.each do |room|
-          room.listen do |message|
-            # Skip if message gets repeated
-            next if message.id <= last_message[room.id].to_i
-
-            # Skip if message is empty
-            next if message.body.nil? or message.user.nil?
-            
-            # Save last ok message id
-            last_message[room.id] = message.id.to_i
-
-            # Make sure room is always valid
-            r = self.campfire.find_room_by_id message.room_id
-
-            yield(r, message)
-
-          end
-        end
-
-        trap(:INT) do
-          self.roooms.each do |room|
-            room.leave
-          end
-          EM.stop if EM.reactor_running? 
-        end
-      end #EM::run
     end
 
   end #class
