@@ -1,4 +1,4 @@
-require 'bacon'
+require 'mocha-on-bacon'
 require 'methane'
 
 Dir.glob('test/**/*.rb').each do |file|
