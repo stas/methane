@@ -17,7 +17,9 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency('slop')
   gem.add_dependency('qtbindings')
+  gem.add_dependency('ffi')
   gem.add_dependency('tinder')
+  gem.add_dependency('yajl-ruby')
   gem.add_dependency('em-websocket')
 
   # Platform specific dependencies
@@ -25,4 +27,5 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency('rake')
   gem.add_development_dependency('bacon')
+  gem.add_development_dependency('mocha-on-bacon')
 end
