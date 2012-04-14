@@ -13,7 +13,7 @@ describe Methane::Proxy do
   end
 
   it '#methods' do
-    %w(account rooms campfire listen speak).each do |m|
+    %w(account rooms campfire speak).each do |m|
       Methane::Proxy.should.respond_to m
     end
   end
