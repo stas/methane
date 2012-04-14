@@ -5,7 +5,6 @@ module Methane
   # Right now supports:
   # * Libnotify (Linux)
   class Notification
-    @instance
 
     # Static method to call to send a notification
     #
@@ -16,7 +15,8 @@ module Methane
       @instance ||= self.new
       begin
         @instance.libnotify(title, body, timeout, icon)
-      rescue LoadError
+      rescue LoadError => e
+        puts e.inspect if Methane.debug
       end
     end
 
