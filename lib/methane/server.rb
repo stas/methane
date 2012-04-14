@@ -32,6 +32,11 @@ module Methane
 
     end #start
 
+
+    # Handles two message format
+    #
+    # If message comes from WebSocket we need to Hashify it
+    # If message is an object, we need to stringify to JSON
     def decode_encode(obj)
       # Encode
       return obj.to_json if obj.class != String
@@ -43,38 +48,30 @@ module Methane
     def start_websocket
       EventMachine::WebSocket.start(@options) do |ws|
 
-        sid = @channel.subscribe do |msg|
-          puts "Message received: #{msg}" if Methane.debug
+        # Once the client connected
+        ws.onopen {
 
-          ws.send(msg)
-          message = decode_encode(msg)
+          # Subscribe it
+          sid = @channel.subscribe { |msg| ws.send(msg) }
 
-          # If it's our message, ignore
-          next if message.user.id == Methane::Proxy.account.id
+          # When a new message is received through socket
+          ws.onmessage do |msg|
+            if msg.match(/!rooms/)
+              # Send the list of rooms
+              ws.send decode_encode(
+                :account => Methane::Proxy.account,
+                :rooms => Methane::Proxy.rooms
+              )
+            else
+              ws.send(msg)
+            end #if
+          end
 
-          # Else notify this
-          room = Methane::Proxy.campfire.find_room_by_id(message.room_id)
-          title = "#{message.user.name} in #{room.name}"
+          # When client disconnected, unsubscribe it
+          ws.onclose { @channel.unsubscribe(sid) }
 
-          Methane::Notification.show(title, message.body)
-        end
+        } # onopen
 
-        ws.onopen do
-        end
-
-        ws.onmessage do |msg|
-          if msg.match(/!rooms/)
-            # Send the list of rooms
-            ws.send decode_encode(
-              :account => Methane::Proxy.account,
-              :rooms => Methane::Proxy.rooms
-            )
-          else
-            ws.send(msg)
-          end #if
-        end
-
-        ws.onclose { @channel.unsubscribe(sid) }
       end
 
       puts "WebSocket started with #{@options.inspect}" if Methane.debug
@@ -87,6 +84,8 @@ module Methane
 
       Methane::Proxy.rooms.each do |room|
         room.listen do |message|
+          puts "Received: #{message.inspect}" if Methane.debug
+
           # Skip if message gets repeated
           next if message.id <= last_message[room.id].to_i
 
@@ -96,11 +95,27 @@ module Methane
           # Save last ok message id
           last_message[room.id] = message.id.to_i
 
+          # Cast it!
           @channel.push decode_encode(message)
+          try_notification(message)
+
         end
       end
     end
 
+    # Sends a notification if message is not ours
+    #
+    # @param message [Hash]
+    def try_notification(message)
+      # If it's our message, ignore
+      return if message.user.id == Methane::Proxy.account.id
+
+      # Else notify this
+      room = Methane::Proxy.campfire.find_room_by_id(message.room_id)
+      title = "#{message.user.name} in #{room.name}"
+
+      Methane::Notification.show(title, message.body)
+    end
   end
 
 end #module
