@@ -1,13 +1,17 @@
 require 'slop'
+require 'multi_json'
 
 require 'methane/version'
 require 'methane/config'
-require 'methane/proxy'
 require 'methane/notifications'
+require 'methane/proxy'
 require 'methane/server'
 require 'methane/app'
 
 module Methane
+
+  # Force tinder to use yajl
+  MultiJson.engine = :yajl
   
   class << self
     attr_accessor :config, :root, :debug
