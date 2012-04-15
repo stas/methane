@@ -56,12 +56,12 @@ module Methane
 
           # When a new message is received through socket
           ws.onmessage do |msg|
-            if msg.match(/!rooms/)
-              # Send the list of rooms
-              ws.send decode_encode(
+            if msg.match(/^!connection$/)
+              # Send the connection details
+              ws.send decode_encode( :connection => {
                 :account => Methane::Proxy.account,
                 :rooms => Methane::Proxy.rooms
-              )
+              })
             else
               ws.send(msg)
             end #if
