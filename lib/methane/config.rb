@@ -17,7 +17,7 @@ module Methane
       @location = File.dirname(path)
       # Used for temporary messages queue
       @messages = []
-      
+
       begin
         @raw = YAML::load_file(path)
         load_settings(@raw)

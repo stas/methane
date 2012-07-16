@@ -12,7 +12,7 @@ module Methane
 
   # Force tinder to use yajl
   MultiJson.engine = :yajl
-  
+
   class << self
     attr_accessor :config, :root, :debug
   end
@@ -46,7 +46,7 @@ module Methane
 
     # End spawned processes
     @pids.map{ |pid| Process.kill(:KILL, pid) if pid }
-    
+
   end # run
 
 end #module

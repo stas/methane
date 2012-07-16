@@ -32,7 +32,7 @@ module Methane
 
       account_name = Methane.config.account
       token = Methane.config.token
-      
+
       begin
         self.campfire = Tinder::Campfire.new(account_name, :token => token)
         self.account = self.campfire.me
