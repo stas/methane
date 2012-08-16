@@ -59,8 +59,8 @@ module Methane
             if msg.match(/^!connection$/)
               # Send the connection details
               ws.send decode_encode( :connection => {
-                :account => Methane::Proxy.account,
-                :rooms => Methane::Proxy.rooms
+                :rooms => fetch_rooms,
+                :account => Methane::Proxy.account
               })
             else
               ws.send(msg)
@@ -77,6 +77,23 @@ module Methane
       puts "WebSocket started with #{@options.inspect}" if Methane.debug
     end
 
+    # Load basic details about rooms
+    def fetch_rooms
+      @rooms ||= []
+      return @rooms unless @rooms.empty?
+      Methane::Proxy.rooms.each do |room|
+        @rooms << {
+          :id => room.id,
+          :name => room.name,
+          :topic => room.topic,
+          :presence => room.presence,
+          :recent => room.recent(1)
+        }
+      end
+
+      return @rooms
+    end
+
     # Starts a notifier
     def start_notifier
 
@@ -87,7 +104,7 @@ module Methane
           puts "Received: #{message.inspect}" if Methane.debug
 
           # Skip if message gets repeated
-          next if message.id <= last_message[room.id].to_i
+          next if message.id != last_message[room.id].to_i
 
           # Skip if message is empty
           next if message.body.nil? or message.user.nil?
