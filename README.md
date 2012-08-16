@@ -1,6 +1,19 @@
 # Methane
 
-TODO: Write a gem description
+Methane was supposed to be a ruby cross-platform Campfire client.
+
+The idea was to build the GUI using qtruby and qt-webkit.
+Where HTML UI elements (with Tempo.js/jQuery) inside a webkit frame
+communicate through a websocket with
+the the backend (EventMachine + tweetstream + tinder).
+
+## Failure
+
+I failed to get a stable build (qtruby keept crashing for any unknown reason)
+so I discontinued any development.
+
+Who knows, I might or not get back to this idea with a smarter approach.
+Till then feel free to play with it and hack around.
 
 ## Installation
 
@@ -18,7 +31,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Building qtruby might take some time. Please be patient, after what just run:
+
+    $ bundle exec methane
 
 ## Contributing
 
